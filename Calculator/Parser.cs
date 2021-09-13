@@ -36,5 +36,15 @@ namespace Calculator
             }
             return false;
         }
+
+        public static bool CheckArgsLenghtOrQuit(string[] args)
+        {
+            if (args.Length != 3)
+            {
+                Console.WriteLine($"Programm needs 3 args, but there is {args.Length}");
+                return true;
+            }
+            return false;
+        }
     }
 }
