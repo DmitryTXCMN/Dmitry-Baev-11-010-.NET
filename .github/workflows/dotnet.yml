@@ -26,4 +26,4 @@ jobs:
     - name: Codecov
       uses: codecov/codecov-action@v2.1.0
       with:
-        file: Toxicman_DESKTOP-R0MP7SM 2021-09-13 19_33_50.coveragexml
+        file: testresults.xml
