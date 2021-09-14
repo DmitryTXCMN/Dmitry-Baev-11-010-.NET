@@ -18,6 +18,7 @@ namespace Calculator.Tests
         [InlineData(new[] { "1", "q", "3" }, 3)]
         [InlineData(new[] { "9", "", "3" }, 3)]
         [InlineData(new[] { "2", "52", "6" }, 3)]
+        [InlineData(new[] { "2", "/", "0" }, 4)]
         public void TryParsOperatorOrQuit_Test(string[] args, int result)
         {
             Assert.Equal(Main(args), result);

@@ -7,6 +7,7 @@ namespace Calculator
         private const int NotEnoughtArgs = 1;
         private const int WrongArgFormat = 2;
         private const int WrongOperation = 3;
+        private const int AttemptToDevideByZero = 4;
 
         public static int Main(string[] args)
         {
@@ -19,7 +20,9 @@ namespace Calculator
             if (Parser.TryParsOperatorOrQuit(args[1], out var operation))
                 return WrongOperation;
 
-            var result = Calculator.Calculate(val1, operation, val2);
+            if (Calculator.Calculate(val1, operation, val2, out var result))
+                return AttemptToDevideByZero;
+
             Console.WriteLine($"Result : {result}");
 
             return 0;
