@@ -23,7 +23,7 @@ namespace Calculator.Tests
         [InlineData(307, Operation.Divide, 10, false, 30)]
         [InlineData(307, Operation.Divide, 0, true, 0)]
 
-        public void Calculate_Test(int val1, Operation operation, int val2, bool resultExpected1, int resultExpected2)
+        public void Calculate_arg1Opera_Test(int val1, Operation operation, int val2, bool resultExpected1, int resultExpected2)
         {
             Assert.Equal(Calculate(val1, operation, val2, out var result), resultExpected1);
             Assert.Equal(resultExpected2, result);

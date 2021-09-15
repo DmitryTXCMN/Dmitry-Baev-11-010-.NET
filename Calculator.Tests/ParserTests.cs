@@ -14,9 +14,9 @@ namespace Calculator.Tests
         [InlineData("1", true)]
         [InlineData("41", true)]
         [InlineData("++", true)]
-        public void TryParsOperatorOrQuit_Test(string arg, bool result)
+        public void TryParseOperatorOrQuit_Test(string arg, bool result)
         {
-            Assert.Equal(TryParsOperatorOrQuit(arg,out Operation operation), result);
+            Assert.Equal(TryParseOperatorOrQuit(arg,out Operation operation), result);
         }
 
         [Theory]
@@ -27,9 +27,9 @@ namespace Calculator.Tests
         [InlineData("-", true)]
         [InlineData("44rfqwe", true)]
         [InlineData("++", true)]
-        public void TryParsArgOrQuit_Test(string arg, bool result)
+        public void TryParseArgOrQuit_Test(string arg, bool result)
         {
-            Assert.Equal(TryParsArgsOrQuit(arg, out int methodResult), result);
+            Assert.Equal(TryParseArgsOrQuit(arg, out int methodResult), result);
         }
 
         [Theory]

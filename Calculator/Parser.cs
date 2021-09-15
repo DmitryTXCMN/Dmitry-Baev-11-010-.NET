@@ -3,7 +3,7 @@ namespace Calculator
 {
     public static class Parser
     {
-        public static bool TryParsOperatorOrQuit(string arg, out Calculator.Operation operation)
+        public static bool TryParseOperatorOrQuit(string arg, out Calculator.Operation operation)
         {
             switch (arg)
             {
@@ -27,7 +27,7 @@ namespace Calculator
             };
             return false;
         }
-        public static bool TryParsArgsOrQuit(string arg, out int result)
+        public static bool TryParseArgsOrQuit(string arg, out int result)
         {
             if (!int.TryParse(arg, out result))
             {
