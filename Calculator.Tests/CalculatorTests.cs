@@ -55,7 +55,5 @@ namespace Calculator.Tests
         {
             Assert.True(Calculate(val1, operation, val2, out var result));
         }
-        
-
     }
 }
