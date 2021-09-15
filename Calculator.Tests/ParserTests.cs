@@ -7,43 +7,59 @@ namespace Calculator.Tests
     public class ParserTests
     {
         [Theory]
-        [InlineData("+", false)]
-        [InlineData("-", false)]
-        [InlineData("*", false)]
-        [InlineData("/", false)]
-        [InlineData("1", true)]
-        [InlineData("41", true)]
-        [InlineData("++", true)]
-        public void TryParseOperatorOrQuit_Test(string arg, bool result)
+        [InlineData("+")]
+        [InlineData("-")]
+        [InlineData("*")]
+        [InlineData("/")]
+        public void TryParseOperatorOrQuit_WithRightOperator_FalseExpected(string arg)
         {
-            Assert.Equal(TryParseOperatorOrQuit(arg,out Operation operation), result);
+            Assert.False(TryParseOperatorOrQuit(arg, out _));
         }
 
         [Theory]
-        [InlineData("41", false)]
-        [InlineData("1", false)]
-        [InlineData("7", false)]
-        [InlineData("494", false)]
-        [InlineData("-", true)]
-        [InlineData("44rfqwe", true)]
-        [InlineData("++", true)]
-        public void TryParseArgOrQuit_Test(string arg, bool result)
+        [InlineData("1")]
+        [InlineData("41")]
+        [InlineData("++")]
+        public void TryParseOperatorOrQuit_WithWrongOperator_TrueExpected(string arg)
         {
-            Assert.Equal(TryParseArgsOrQuit(arg, out int methodResult), result);
+            Assert.True(TryParseOperatorOrQuit(arg, out _));
         }
 
         [Theory]
-        [InlineData(new[] { "1", "2", "3" }, false)]
-        [InlineData(new[] { "`", "q", "a" }, false)]
-        [InlineData(new[] { "1daw", "7ryhe", "`3`1d" }, false)]
-        [InlineData(new[] { "1", "2" }, true)]
-        [InlineData(new[] { "1", "2", "3", "fqw12" }, true)]
-        [InlineData(new[] { "" }, true)]
-        public void CheckArgsLenghtOrQuit_Test(string[] args, bool result)
+        [InlineData("41")]
+        [InlineData("1")]
+        [InlineData("7")]
+        [InlineData("494")]
+        public void TryParseArgOrQuit_WithIntArgument_FalseExpected(string arg)
         {
-            Assert.Equal(CheckArgsLenghtOrQuit(args), result);
+            Assert.False(TryParseArgsOrQuit(arg, out _));
         }
 
-        
+        [Theory]
+        [InlineData("-")]
+        [InlineData("44rfqwe")]
+        [InlineData("++")]
+        public void TryParseArgOrQuit_WithWrongArgument_TrueExpected(string arg)
+        {
+            Assert.True(TryParseArgsOrQuit(arg, out _));
+        }
+
+        [Theory]
+        [InlineData("1", "+", "6")]
+        [InlineData("`", "q", "a")]
+        [InlineData("1daw", "7ryhe", "`3`1d")]
+        public void CheckArgsLenghtOrQuit_With3Args_FalseExpected(params string[] args)
+        {
+            Assert.False(CheckArgsLenghtOrQuit(args));
+        }
+
+        [Theory]
+        [InlineData("af", "4")]
+        [InlineData("1", "2", "3", "fqw12")]
+        [InlineData("")]
+        public void CheckArgsLenghtOrQuit_WithLessOrMore3Args_TrueExpected(params string[] args)
+        {
+            Assert.True(CheckArgsLenghtOrQuit(args));
+        }
     }
 }
