@@ -1,8 +1,13 @@
-﻿.class public auto ansi abstract sealed beforefieldinit CalculatorWithIL.Calculator
-    extends [System.Private.CoreLib]System.Object
+﻿.assembly CalculatorWithIL
+{
+  .ver 1:0:0:0
+}
+
+.class public auto ansi abstract sealed beforefieldinit CalculatorWithIL.Calculator
+    extends [CORE_ASSEMBLY]System.Object
 {
     .class nested public auto ansi sealed Operation
-        extends [System.Private.CoreLib]System.Enum
+        extends System.Enum
     {
         .field public specialname rtspecialname int32 value__
         .field public static literal valuetype CalculatorWithIL.Calculator/Operation Plus = int32(0)

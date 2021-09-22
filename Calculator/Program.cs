@@ -14,7 +14,7 @@ namespace Calculator
             if (CalculatorWithIL.Parser.CheckArgsLenghtOrQuit(args))
                 return NotEnoughtArgs;
 
-            if (CalculatorWithIL.Parser.TryParseArgsOrQuit(args[0], out var val1) || Parser.TryParseArgsOrQuit(args[2], out var val2))
+            if (CalculatorWithIL.Parser.TryParseArgsOrQuit(args[0], out var val1) || CalculatorWithIL.Parser.TryParseArgsOrQuit(args[2], out var val2))
                 return WrongArgFormat;
 
             if (CalculatorWithIL.Parser.TryParseOperatorOrQuit(args[1], out var operation))
