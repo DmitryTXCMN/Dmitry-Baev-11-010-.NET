@@ -4,10 +4,10 @@ open System
 
 module Parser =
     let CheckArgsLenghtOrQuit (args:string[]) =
-        if args.Length <> 3 then false
+        if args.Length <> 3 then true
         else
         printf "Programm needs 3 args, but there is {args.Length}"
-        true
+        false
 
     let TryParseArgsOrQuit (arg:string) (result:outref<int>) =
         if Int32.TryParse(arg, &result) then
@@ -17,10 +17,11 @@ module Parser =
             true    
 
     let TryParseOperatorOrQuit arg (result:outref<Calculator.Operation>) =
+        let mutable flag = false
         match arg with
-        | "+" -> result = Calculator.Operation.Plus
-        | "-" -> result = Calculator.Operation.Minus
-        | "*" -> result = Calculator.Operation.Multiply
-        | "/" -> result = Calculator.Operation.Divide
-        | _ -> true
-        false
+        | "+" -> result <- Calculator.Operation.Plus
+        | "-" -> result <- Calculator.Operation.Minus
+        | "*" -> result <- Calculator.Operation.Multiply
+        | "/" -> result <- Calculator.Operation.Divide
+        | _ -> flag <- true
+        flag

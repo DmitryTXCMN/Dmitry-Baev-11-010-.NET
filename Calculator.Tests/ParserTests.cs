@@ -11,7 +11,7 @@ namespace Calculator.Tests
         [InlineData("/")]
         public void TryParseOperatorOrQuit_WithRightOperator_FalseExpected(string arg)
         {
-            Assert.False(CalculatorWithIL.Parser.TryParseOperatorOrQuit(arg, out _));
+            Assert.False(CalculatorF.Parser.TryParseOperatorOrQuit(arg, out _));
         }
 
         [Theory]
@@ -20,7 +20,7 @@ namespace Calculator.Tests
         [InlineData("++")]
         public void TryParseOperatorOrQuit_WithWrongOperator_TrueExpected(string arg)
         {
-            Assert.True(CalculatorWithIL.Parser.TryParseOperatorOrQuit(arg, out _));
+            Assert.True(CalculatorF.Parser.TryParseOperatorOrQuit(arg, out _));
         }
 
         [Theory]
@@ -30,7 +30,7 @@ namespace Calculator.Tests
         [InlineData("494")]
         public void TryParseArgOrQuit_WithIntArgument_FalseExpected(string arg)
         {
-            Assert.False(CalculatorWithIL.Parser.TryParseArgsOrQuit(arg, out _));
+            Assert.False(CalculatorF.Parser.TryParseArgsOrQuit(arg, out _));
         }
 
         [Theory]
@@ -39,7 +39,7 @@ namespace Calculator.Tests
         [InlineData("++")]
         public void TryParseArgOrQuit_WithWrongArgument_TrueExpected(string arg)
         {
-            Assert.True(CalculatorWithIL.Parser.TryParseArgsOrQuit(arg, out _));
+            Assert.True(CalculatorF.Parser.TryParseArgsOrQuit(arg, out _));
         }
 
         [Theory]
@@ -48,7 +48,7 @@ namespace Calculator.Tests
         [InlineData("1daw", "7ryhe", "`3`1d")]
         public void CheckArgsLenghtOrQuit_With3Args_FalseExpected(params string[] args)
         {
-            Assert.False(CalculatorWithIL.Parser.CheckArgsLenghtOrQuit(args));
+            Assert.False(CalculatorF.Parser.CheckArgsLenghtOrQuit(args));
         }
 
         [Theory]
@@ -57,7 +57,7 @@ namespace Calculator.Tests
         [InlineData("")]
         public void CheckArgsLenghtOrQuit_WithLessOrMore3Args_TrueExpected(params string[] args)
         {
-            Assert.True(CalculatorWithIL.Parser.CheckArgsLenghtOrQuit(args));
+            Assert.True(CalculatorF.Parser.CheckArgsLenghtOrQuit(args));
         }
     }
 }
