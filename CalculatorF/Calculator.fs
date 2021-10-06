@@ -7,7 +7,7 @@ module Calculator =
         | Divide
         | Multiply
 
-    let Calculate val1 operation val2 (result:byref<int>) =
+    let Calculate val1 operation val2 (result:outref<int>) =
            match operation with
            | Plus -> result = val1 + val2
            | Minus -> result = val1 - val2

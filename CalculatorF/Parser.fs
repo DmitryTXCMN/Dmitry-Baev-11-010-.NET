@@ -9,14 +9,14 @@ module Parser =
         printf "Programm needs 3 args, but there is {args.Length}"
         true
 
-    let TryParseArgsOrQuit (arg:string) (result:byref<int>) =
+    let TryParseArgsOrQuit (arg:string) (result:outref<int>) =
         if Int32.TryParse(arg, &result) then
             false
         else
             Console.WriteLine($"value is not int. The value was {arg}");
             true    
 
-    let TryParseOperatorOrQuit arg (result:byref<Calculator.Operation>) =
+    let TryParseOperatorOrQuit arg (result:outref<Calculator.Operation>) =
         match arg with
         | "+" -> result = Calculator.Operation.Plus
         | "-" -> result = Calculator.Operation.Minus
