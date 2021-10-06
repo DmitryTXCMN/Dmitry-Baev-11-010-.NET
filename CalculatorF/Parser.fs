@@ -4,10 +4,11 @@ open System
 
 module Parser =
     let CheckArgsLenghtOrQuit (args:string[]) =
-        if args.Length <> 3 then true
+        if args.Length <> 3 then    
+            printf $"Programm needs 3 args, but there is {args.Length}"
+            true
         else
-        printf "Programm needs 3 args, but there is {args.Length}"
-        false
+            false
 
     let TryParseArgsOrQuit (arg:string) (result:outref<int>) =
         if Int32.TryParse(arg, &result) then

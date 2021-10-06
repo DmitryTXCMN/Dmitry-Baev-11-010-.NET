@@ -2,7 +2,7 @@
   "profiles": {
     "Calculator": {
       "commandName": "Project",
-      "commandLineArgs": "9 / 3"
+      "commandLineArgs": "10 * 13"
     }
   }
 }
