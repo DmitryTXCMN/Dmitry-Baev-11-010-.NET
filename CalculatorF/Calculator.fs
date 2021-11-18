@@ -1,19 +1,17 @@
-﻿namespace CalculatorF
+﻿module Calculator 
 
-module Calculator =
     type Operation =
         | Plus = 1
         | Minus = 2
         | Divide = 3
         | Multiply = 4
 
-    let Calculate val1 operation val2 (result:outref<int>) =
-        let mutable flag = false
+    let Calculate (val1:int, operation:Operation, val2:int) =
         match operation with
-        | Operation.Plus -> result <- val1 + val2
-        | Operation.Minus -> result <- val1 - val2
-        | Operation.Multiply -> result <- val1 * val2
+        | Operation.Plus -> Some (val1 + val2)
+        | Operation.Minus -> Some (val1 - val2)
+        | Operation.Multiply -> Some (val1 * val2)
         | Operation.Divide ->
-            if val2 = 0 then flag <- true
-            else result <- val1 / val2
-        flag
+            if val2.Equals(0) then None
+            else Some (val1 / val2)
+        | _ -> None

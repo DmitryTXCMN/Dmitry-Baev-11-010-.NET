@@ -1,28 +1,33 @@
-﻿namespace CalculatorF
+module Parser
 
-open System
+open MaybeBuilder
 
-module Parser =
-    let CheckArgsLenghtOrQuit (args:string[]) =
+    let CheckArgsLenght (args:string[]) =
         if args.Length <> 3 then    
-            printf $"Programm needs 3 args, but there is {args.Length}"
-            true
+            None
         else
-            false
+            Some args
+            
+    let TryParseArg (args:string[]) =
+        try
+            Some(args[0] |> int, args[1], args[2] |> int)
+        with
+            | _ -> None
 
-    let TryParseArgsOrQuit (arg:string) (result:outref<int>) =
-        if Int32.TryParse(arg, &result) then
-            false
-        else
-            Console.WriteLine($"value is not int. The value was {arg}");
-            true    
-
-    let TryParseOperatorOrQuit arg (result:outref<Calculator.Operation>) =
-        let mutable flag = false
-        match arg with
-        | "+" -> result <- Calculator.Operation.Plus
-        | "-" -> result <- Calculator.Operation.Minus
-        | "*" -> result <- Calculator.Operation.Multiply
-        | "/" -> result <- Calculator.Operation.Divide
-        | _ -> flag <- true
-        flag
+    let TryParseOperator (val1:int, operation, val2:int) = maybeBuilder{
+        let! operator = match operation with
+        | "+" -> Some Calculator.Operation.Plus
+        | "-" -> Some Calculator.Operation.Minus
+        | "*" -> Some Calculator.Operation.Multiply
+        | "/" -> Some Calculator.Operation.Divide
+        | _ -> None
+        return (val1, operator, val2)
+        }
+        
+    let Parse argv = maybeBuilder{
+        let! checkArgLenght = CheckArgsLenght argv
+        let! parsedArgs = TryParseArg checkArgLenght
+        let! parsedArgsAndOperator = TryParseOperator parsedArgs
+        return parsedArgsAndOperator
+        }
+    

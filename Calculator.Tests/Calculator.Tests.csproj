@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculatorF\CalculatorF.fsproj" />
-    <ProjectReference Include="..\Calculator\Calculator.csproj" />
   </ItemGroup>
 
 </Project>
