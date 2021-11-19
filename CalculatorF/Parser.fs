@@ -30,4 +30,3 @@ open MaybeBuilder
         let! parsedArgsAndOperator = TryParseOperator parsedArgs
         return parsedArgsAndOperator
         }
-    

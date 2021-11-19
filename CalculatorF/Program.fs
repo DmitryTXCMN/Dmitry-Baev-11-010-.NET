@@ -1,13 +1,16 @@
-module Program
+namespace CalculatorF 
 
-open System
+module Program = 
+
 open MaybeBuilder
+open Calculator
+open Parser
 
-    [<EntryPoint>]
+    
     let main argv =
         let result = maybeBuilder {
-            let! parsed = Parser.Parse argv
-            let! result = Calculator.Calculate parsed
+            let! parsed = Parse argv
+            let! result = Calculate parsed
             return result
         }
         
