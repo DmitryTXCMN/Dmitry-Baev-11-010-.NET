@@ -1,4 +1,6 @@
-﻿module Calculator 
+﻿namespace CalculatorF
+
+module Calculator  =
 
     type Operation =
         | Plus = 1

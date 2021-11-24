@@ -1,1 +1,0 @@
-﻿CalculatorF.Program.main(args);

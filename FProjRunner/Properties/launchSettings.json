@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "FProjRunner": {
-      "commandName": "Project",
-      "commandLineArgs": "40 / 0"
-    }
-  }
-}

@@ -1,5 +1,8 @@
-module Parser
+namespace CalculatorF
 
+module Parser =
+
+open CalculatorF
 open MaybeBuilder
 
     let CheckArgsLenght (args:string[]) =
@@ -10,7 +13,7 @@ open MaybeBuilder
             
     let TryParseArg (args:string[]) =
         try
-            Some(args[0] |> int, args[1], args[2] |> int)
+            Some(args.[0] |> int, args.[1], args.[2] |> int)
         with
             | _ -> None
 

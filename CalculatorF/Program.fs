@@ -7,13 +7,13 @@ open Calculator
 open Parser
 
     
-    let main argv =
-        let result = maybeBuilder {
+    let GetResult argv = maybeBuilder {
             let! parsed = Parse argv
             let! result = Calculate parsed
             return result
         }
-        
+    let main argv =
+        let result = GetResult argv
         match result with
         | Some value ->
             printf $"{value}"
