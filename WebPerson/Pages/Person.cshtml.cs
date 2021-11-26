@@ -11,7 +11,6 @@ namespace WebPerson.Pages
         {
         }
 
-        [HttpPost]
         public void OnPost()
         {
             Console.WriteLine("Post");

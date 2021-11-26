@@ -8,8 +8,11 @@ namespace WebPerson.Controllers
     public class PersonController : Controller
     {
         [HttpGet]
-        public IActionResult Person() =>
-            View();
+        public IActionResult Person()
+        {
+            Console.WriteLine("ss");
+            return View();
+        }
 
         [HttpPost]
         public IActionResult Person(Person person)
