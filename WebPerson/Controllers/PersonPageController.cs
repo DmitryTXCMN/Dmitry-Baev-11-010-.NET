@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebPerson.Models;
 
 namespace WebPerson.Controllers
@@ -8,17 +7,11 @@ namespace WebPerson.Controllers
     public class PersonController : Controller
     {
         [HttpGet]
-        public IActionResult Person()
-        {
-            Console.WriteLine("ss");
-            return View();
-        }
+        public IActionResult Person() =>
+            View();
 
         [HttpPost]
-        public IActionResult Person(Person person)
-        {
-            Console.WriteLine("ss");
-            return View(person);
-        }
+        public IActionResult Person(Person person) =>
+            View(person);
     }
 }
