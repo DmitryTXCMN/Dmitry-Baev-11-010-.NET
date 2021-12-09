@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculatorF\CalculatorF.fsproj" />
-    <ProjectReference Include="..\WebCalculator\WebCalculator.fsproj" />
+    <ProjectReference Include="..\WebCalculatorWithDI\WebCalculatorWithDI.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
-using WebCalculator;
+using WebCalculatorWithDI;
 using Xunit;
 
 namespace WebApplication.Tests
@@ -23,7 +23,7 @@ namespace WebApplication.Tests
 
         private async Task<decimal> Action(decimal val1, string operation, decimal val2)
         {
-            var response = await client.GetAsync($"http://localhost:7240/?val1={val1}&operation={operation}&val2={val2}");
+            var response = await client.GetAsync($"http://localhost:7145/calc?val1={val1}&operation={operation}&val2={val2}");
 
             var strNumber = await response.Content.ReadAsStringAsync();
             decimal parsed;
@@ -90,16 +90,10 @@ namespace WebApplication.Tests
         public async Task SomeFails()
         {
             var response = await client.GetAsync("http://localhost:7240/?val1=1");
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
 
             response = await client.GetAsync("http://localhost:7240/?val1=1&operation=qwe&val2=24");
-            Assert.Equal((HttpStatusCode)450, response.StatusCode);
-            Assert.Equal($"\"Error\"",
-                await response.Content.ReadAsStringAsync());
-
-            response = await client.GetAsync("http://localhost:7240/?val1=1&operation=/&val2=0");
-            Assert.Equal($"\"Error\"",
-                await response.Content.ReadAsStringAsync());
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }
