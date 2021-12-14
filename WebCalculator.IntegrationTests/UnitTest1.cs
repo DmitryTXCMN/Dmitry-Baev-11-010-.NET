@@ -1,99 +1,76 @@
 using System;
-using System.Globalization;
-using System.Net;
+using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using WebCalculatorWithDI;
 using Xunit;
 
-namespace WebApplication.Tests
+namespace Tests8
 {
-    public class CalculatorTests
+    public class HostBuilder : WebApplicationFactory<Startup>
     {
-        private WebApplicationFactory<Startup> factory;
-        private HttpClient client;
+        protected override IHostBuilder CreateHostBuilder()
+            => Host
+                .CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(a => a
+                    .UseStartup<Startup>()
+                    .UseTestServer());
+    }
 
-       
-        public CalculatorTests()
+    public class IntegrationTests : IClassFixture<HostBuilder>
+    {
+        private readonly HttpClient _client;
+
+        public IntegrationTests(HostBuilder fixture)
         {
-            factory = new WebApplicationFactory<Startup>();
-            client = factory.CreateClient();
+            _client = fixture.CreateClient();
         }
 
-        private async Task<decimal> Action(decimal val1, string operation, decimal val2)
+        private static readonly Uri Uri = new("https://localhost:7145/Calcs");
+        private const string Error = "Error";
+
+        [Theory]
+        [InlineData("10%2B6", "16")]
+        [InlineData("10-50", "-40")]
+        [InlineData("7*5", "35")]
+        [InlineData("63/3", "21")]
+        [InlineData("(100/50)%2B2", "4")]
+        public async Task CalculatorController_ReturnCorrectResult(string expression, string expected)
+            => await MakeTestAsync(expression, expected);
+
+        [Theory]
+        [InlineData("sometext")]
+        [InlineData("()1-1(")]
+        [InlineData("((1-1)")]
+        [InlineData("(1-1)/")]
+        [InlineData("((1-1)()")]
+        public async Task CalculatorController_ReturnError(string expression)
+            => await MakeTestAsync(expression, Error);
+
+        private async Task MakeTestAsync(string expression, string expected)
         {
-            var response = await client.GetAsync($"http://localhost:7145/calc?val1={val1}&operation={operation}&val2={val2}");
-
-            var strNumber = await response.Content.ReadAsStringAsync();
-            decimal parsed;
-            try
-            {
-                parsed = decimal.Parse(strNumber, CultureInfo.InvariantCulture);
-            }
-            catch
-            {
-                throw new Exception($"Cant parse, the number is {strNumber}");
-            }
-
-            return parsed;
+            var str = $"?expressionString={expression}";
+            using var response = await _client.GetAsync(Uri+str);
+            var result = await response.Content.ReadAsStringAsync();
+            Assert.Equal(expected, result);
         }
 
-        private async Task<decimal> Sum(decimal val1, decimal val2) => await Action(val1, "%2B", val2);
-        private async Task<decimal> Dif(decimal val1, decimal val2) => await Action(val1, "-", val2);
-        private async Task<decimal> Mult(decimal val1, decimal val2) => await Action(val1, "*", val2);
-        private async Task<decimal> Div(decimal val1, decimal val2) => await Action(val1, "/" ,val2);
-
-        private static void CheckEquality(decimal val1, decimal val2) => Assert.True(Math.Round(val1 - val2) < 0.0001m);
-
-        [Fact]
-        public async Task Sums()
+        [Theory]
+        [InlineData("(1001%2b999)/2000*20-1")]
+        private async Task CalculatorController_ParallelTest(string expression)
         {
-            CheckEquality(2m, await Sum(0, 2));
-            CheckEquality(10m, await Sum(5, 5));
-            CheckEquality(19m, await Sum(17, 2));
-            CheckEquality(105m, await Sum(6, 99));
-            CheckEquality(980m, await Sum(61, 919));
-        }
-
-        [Fact]
-        public async Task Difs()
-        {
-            CheckEquality(0m, await Dif(7, 7));
-            CheckEquality(5m, await Dif(10, 5));
-            CheckEquality(-1m, await Dif(55, 56));
-            CheckEquality(-145m, await Dif(55, 200));
-            CheckEquality(9111m, await Dif(11111, 2000));
-        }
-
-        [Fact]
-        public async Task Mults()
-        {
-            CheckEquality(0m, await Mult(1, 0));
-            CheckEquality(7m, await Mult(7, 1));
-            CheckEquality(144m, await Mult(12, 12));
-            CheckEquality(150m, await Mult(15, 10));
-            CheckEquality(1320m, await Mult(110, 12));
-        }
-
-        [Fact]
-        public async Task Divs()
-        {
-            CheckEquality(0m, await Div(0, 555));
-            CheckEquality(5m, await Div(25, 5));
-            CheckEquality(25m, await Div(25, 1));
-            CheckEquality(110m, await Div(990, 9));
-            CheckEquality(2.5m, await Div(100, 40));
-        }
-
-        [Fact]
-        public async Task SomeFails()
-        {
-            var response = await client.GetAsync("http://localhost:7240/?val1=1");
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
-            response = await client.GetAsync("http://localhost:7240/?val1=1&operation=qwe&val2=24");
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            var watch = new Stopwatch();
+            var str = $"expression={expression}";
+            watch.Start();
+            using var response = await _client.GetAsync(Uri + str);
+            watch.Stop();
+            var result = watch.ElapsedMilliseconds;
+            Assert.True(result - 1000 < 500);
         }
     }
 }

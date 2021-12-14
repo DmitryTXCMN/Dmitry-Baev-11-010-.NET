@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using WebCalculatorWithDI.CalcExpressionTreeBuilder;
 using WebCalculatorWithDI.Controllers;
-using WebCalculatorWithDI.Models;
 
 namespace WebCalculatorWithDI
 {
@@ -17,7 +12,7 @@ namespace WebCalculatorWithDI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ICalculator>(new CalculatorAdapter());
+            services.AddSingleton<IExpressionCalculator, ExpressionCalculator>();
             services.AddControllersWithViews();
         }
 
