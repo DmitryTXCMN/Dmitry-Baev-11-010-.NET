@@ -8,7 +8,7 @@ module Calculator  =
         | Divide = 3
         | Multiply = 4
 
-    let Calculate (val1:int, operation:Operation, val2:int) =
+    let Calculate (val1:decimal, operation:Operation, val2:decimal) =
         match operation with
         | Operation.Plus -> Some (val1 + val2)
         | Operation.Minus -> Some (val1 - val2)

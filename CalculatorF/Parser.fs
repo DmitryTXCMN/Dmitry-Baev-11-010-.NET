@@ -2,6 +2,7 @@ namespace CalculatorF
 
 module Parser =
 
+open System
 open CalculatorF
 open MaybeBuilder
 
@@ -13,11 +14,11 @@ open MaybeBuilder
             
     let TryParseArg (args:string[]) =
         try
-            Some(args.[0] |> int, args.[1], args.[2] |> int)
+            Some(Decimal.Parse(args.[0]), args.[1], Decimal.Parse(args.[2]))
         with
             | _ -> None
 
-    let TryParseOperator (val1:int, operation, val2:int) = maybeBuilder{
+    let TryParseOperator (val1:decimal, operation, val2:decimal) = maybeBuilder{
         let! operator = match operation with
         | "+" -> Some Calculator.Operation.Plus
         | "-" -> Some Calculator.Operation.Minus

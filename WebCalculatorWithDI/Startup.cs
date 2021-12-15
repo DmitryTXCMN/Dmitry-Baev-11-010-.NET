@@ -19,6 +19,7 @@ namespace WebCalculatorWithDI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ExceptionLogHandler>();
             services.AddSingleton<ExpressionEntitysContext>();
             services.AddSingleton<ExpressionDbCache>();
             services.AddSingleton<CalculatorVisitorCache>();

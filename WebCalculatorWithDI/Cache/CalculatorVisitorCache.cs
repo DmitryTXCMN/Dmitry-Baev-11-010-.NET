@@ -6,17 +6,25 @@ using WebCalculatorWithDI.DataBase;
 
 namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
 {
-    public class CalculatorVisitorCache : CalculatorVisitor
+    public class CalculatorVisitorCache
     {
         private ExpressionDbCache _cache;
 
         public CalculatorVisitorCache(ExpressionDbCache cache) =>
             _cache = cache;
 
-        protected override Expression VisitBinary(BinaryExpression node)
+        public Expression StartVisiting(Expression expression) =>
+            Visit((dynamic)expression);
+
+        private Expression Visit(ConstantExpression node)
+        { 
+            return node;
+        }
+
+            private Expression Visit(BinaryExpression node)
         {
-            var left = Task.Run(() => Visit(node.Left));
-            var right = Task.Run(() => Visit(node.Right));
+            var left = Task.Run(() => StartVisiting(node.Left));
+            var right = Task.Run(() => StartVisiting(node.Right));
 
             var delay = Task.Delay(1000);
             Task.WhenAll(left, right);
@@ -51,6 +59,14 @@ namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
                 delay.Wait();
                 return result;
             }).Res);
+        }
+
+        private Expression Visit(UnaryExpression node)
+        {
+            var result =  (ConstantExpression) (node.Operand is BinaryExpression binary
+                    ? Visit(binary)
+                    : node.Operand);
+            return Expression.Constant(node.Method?.Invoke(default, new[] { result?.Value }));
         }
     }
 }
