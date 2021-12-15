@@ -8,14 +8,14 @@ namespace WebCalculatorWithDI.Controllers
     public class CalculatorController : Controller
     {
         [HttpGet, Route("Calcs")]
-        public IActionResult Calcs([FromServices] IExpressionCalculator calculator, string expressionString)
+        public IActionResult Calcs([FromServices] CalculatorVisitorCache visitor, [FromServices] IExpressionCalculator calculator, string expressionString)
         {
             if (!calculator.TryParseStringIntoExpression(expressionString, out var exp))
             {
                 return Ok("Error");
             }
 
-            var result = new CalculatorVisitor().Visit(exp);
+            var result = visitor.Visit(exp);
             return Ok(result.ToString());
         }
     }

@@ -1,5 +1,12 @@
-﻿using WebCalculatorWithDI.CalcExpressionTreeBuilder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using WebCalculatorWithDI.Cache;
+using WebCalculatorWithDI.CalcExpressionTreeBuilder;
 using WebCalculatorWithDI.Controllers;
+using WebCalculatorWithDI.DataBase;
 
 namespace WebCalculatorWithDI
 {
@@ -12,6 +19,9 @@ namespace WebCalculatorWithDI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ExpressionEntitysContext>();
+            services.AddSingleton<ExpressionDbCache>();
+            services.AddSingleton<CalculatorVisitorCache>();
             services.AddSingleton<IExpressionCalculator, ExpressionCalculator>();
             services.AddControllersWithViews();
         }
