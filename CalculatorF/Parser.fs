@@ -14,11 +14,11 @@ open MaybeBuilder
             
     let TryParseArg (args:string[]) =
         try
-            Some(Decimal.Parse(args.[0]), args.[1], Decimal.Parse(args.[2]))
+            Some(Int32.Parse(args.[0]), args.[1], Int32.Parse(args.[2]))
         with
             | _ -> None
 
-    let TryParseOperator (val1:decimal, operation, val2:decimal) = maybeBuilder{
+    let TryParseOperator (val1:int32, operation, val2:int32) = maybeBuilder{
         let! operator = match operation with
         | "+" -> Some Calculator.Operation.Plus
         | "-" -> Some Calculator.Operation.Minus

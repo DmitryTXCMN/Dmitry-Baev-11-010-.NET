@@ -1,33 +1,38 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebCalculatorWithDI.CalcExpressionTreeBuilder;
 
 namespace WebCalculatorWithDI.Controllers
 {
     public class CalculatorController : Controller
     {
         [HttpGet, Route("Calcs")]
-        public IActionResult Calcs(
-            [FromServices] ExceptionLogHandler handler,
-            [FromServices] CalculatorVisitorCache visitor,
-            [FromServices] IExpressionCalculator calculator,
-            string expressionString)
+        public IActionResult Calcs()
         {
-            if (!calculator.TryParseStringIntoExpression(expressionString, out var exp))
-            {
-                return Ok("Error");
-            }
+            return Ok("s");
+        }
 
+        [HttpGet, Route("calc")]
+        public IActionResult Calc([FromServices] ICalculator calculator, [FromQuery] CalculatorValues args)
+        {
             try
             {
-                var result = visitor.StartVisiting(exp);
-                return Ok(result.ToString());
+                return Ok(calculator.Calculate(new string[] { args.Val1, args.Operation, args.Val2 }));
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                handler.Handle(LogLevel.Error, ex);
-                return BadRequest();
+                Console.WriteLine(e.Message);
+                return new ObjectResult(e.Message)
+                {
+                    StatusCode = 450
+                };
             }
+        }
+
+        public class CalculatorValues
+        {
+            public string Val1 { get; set; }
+            public string Operation { get; set; }
+            public string Val2 { get; set; }
         }
     }
 }
