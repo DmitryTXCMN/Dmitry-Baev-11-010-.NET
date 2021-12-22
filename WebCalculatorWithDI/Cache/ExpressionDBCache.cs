@@ -20,9 +20,7 @@ namespace WebCalculatorWithDI.Cache
                 lock (_context)
                 {
                     return _context.Items.First(expression =>
-                        expression.V1 == expWithoutRes.V1 &&
-                        expression.V2 == expWithoutRes.V2 &&
-                        expression.Op == expWithoutRes.Op);
+                       expression.Expression == expWithoutRes.Expression);
                 }
             }
             catch

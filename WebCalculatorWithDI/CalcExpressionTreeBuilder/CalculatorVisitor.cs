@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using WebCalculatorWithDI.Decorator;
 
 namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
 {
@@ -13,7 +12,7 @@ namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
             var right = Task.Run(() => Visit(node.Right));
 
             Thread.Sleep(1000);
-            Task.WhenAll(left, right);
+            Task.WhenAll(left, right).Wait();
 
             var leftResult = (decimal)((ConstantExpression)left.Result)?.Value!;
             var rightResult = (decimal)((ConstantExpression)right.Result)?.Value!;
