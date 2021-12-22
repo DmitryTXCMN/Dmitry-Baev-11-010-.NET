@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using WebCalculatorWithDI.Decorator;
 
 namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
 {
@@ -10,19 +11,19 @@ namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
         {
             var left = Task.Run(() => Visit(node.Left));
             var right = Task.Run(() => Visit(node.Right));
-            
+
             Thread.Sleep(1000);
             Task.WhenAll(left, right);
-        
-            var leftResult = (decimal)((ConstantExpression) left.Result)?.Value!;
-            var rightResult = (decimal)((ConstantExpression) right.Result)?.Value!;
-            
+
+            var leftResult = (decimal)((ConstantExpression)left.Result)?.Value!;
+            var rightResult = (decimal)((ConstantExpression)right.Result)?.Value!;
+
             var operation = node.NodeType switch
             {
-                ExpressionType.Add        => "+",
-                ExpressionType.Subtract   => "-",
-                ExpressionType.Multiply   => "*",
-                ExpressionType.Divide     => "/"
+                ExpressionType.Add => "+",
+                ExpressionType.Subtract => "-",
+                ExpressionType.Multiply => "*",
+                ExpressionType.Divide => "/"
             };
 
             var result = (decimal)CalculatorF.Program.GetResult(new string[] {
@@ -30,7 +31,7 @@ namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
                 operation,
                 rightResult.ToString()})
                 .Value;
-        
+
             return Expression.Constant(result);
         }
     }
