@@ -9,9 +9,9 @@ namespace WebCalculatorWithDI.CalcExpressionTreeBuilder
             var left = Task.Run(() => Visit(node.Left));
             var right = Task.Run(() => Visit(node.Right));
             
-            Thread.Sleep(1000);
             Task.WhenAll(left, right);
-        
+            Thread.Sleep(1000);
+
             var leftResult = (decimal)((ConstantExpression) left.Result)?.Value!;
             var rightResult = (decimal)((ConstantExpression) right.Result)?.Value!;
             
