@@ -19,8 +19,6 @@ namespace WebCalculatorWithDI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ExpressionEntitysContext>();
-            services.AddSingleton<ExpressionDbCache>();
             services.AddSingleton<CalculatorVisitorCache>();
             services.AddSingleton<IExpressionCalculator, ExpressionCalculator>();
             services.AddControllersWithViews();

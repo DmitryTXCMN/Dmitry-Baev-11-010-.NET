@@ -4,32 +4,28 @@ using WebCalculatorWithDI.DataBase;
 
 namespace WebCalculatorWithDI.Cache
 {
-    public class ExpressionDbCache
+    public static class ExpressionDbCache
     {
-        private readonly ExpressionEntitysContext _context;
+        private static readonly List<ExpressionEntity> _cache = new List<ExpressionEntity>();
 
-        public ExpressionDbCache(ExpressionEntitysContext context) =>
-            _context = context;
-
-        public ExpressionEntity GetOrSet(
+        public static ExpressionEntity GetOrSet(
             ExpressionEntity expWithoutRes,
             Func<decimal> resultBuilder)
         {
             try
             {
-                lock (_context)
+                lock (_cache)
                 {
-                    return _context.Items.First(expression =>
+                    return _cache.First(expression =>
                        expression.Expression == expWithoutRes.Expression);
                 }
             }
             catch
             {
                 expWithoutRes.Res = resultBuilder();
-                lock (_context)
+                lock (_cache)
                 {
-                    _context.Items.Add(expWithoutRes);
-                    _context.SaveChanges();
+                    _cache.Add(expWithoutRes);
                 }
                 return expWithoutRes;
             }
